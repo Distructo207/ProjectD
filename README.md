@@ -15,6 +15,6 @@ Running `grunt test` will run the unit tests with karma.
 
 - Swatarianess = Stephen
 - Smh1239 = Suleman
-- .
+- Mrluigifan102 = Marik
 - .
 - .
