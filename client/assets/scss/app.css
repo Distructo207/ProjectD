@@ -1,0 +1,8 @@
+@import "settings";
+@import "foundation";
+
+.grid-frame {
+	background-image: http://helenpark.nl/images/bg.png("br.png");
+	background-color: yellow;
+	position: center;
+}
