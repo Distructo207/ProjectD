@@ -1,110 +1,111 @@
-CREATE TABLE ASubject (
-	Aname VARCHAR(250) NOT NULL,
-	description VARCHAR(250),
-	CONSTRAINT pk_subject PRIMARY KEY (Aname)
+--
+--Table structure for table 'account'
+--
+
+CREATE TABLE account {
+	username VARCHAR(50) NOT NULL,
+	'type' enum('student', 'staff', 'admin') NOT NULL DEFAULT 'student',
+	password VARCHAR(255) NOT NULL,
+	CONSTRAINT pk_account PRIMARY KEY (username)
+}
+
+--
+--Table structure for table 'subject'
+--
+
+CREATE TABLE subject (
+	name VARCHAR(50) NOT NULL,
+	description VARCHAR(255) DEFAULT 'Sorry, no description for this subject is available.',
+	CONSTRAINT pk_subject PRIMARY KEY (name)
 );
 
-CREATE TABLE AClass (
-	groupID INTEGER NOT NULL,
+--
+--Table structure for table 'class'
+--
+
+CREATE TABLE class (
+	'group' INTEGER NOT NULL,
 	timeStart DATETIME NOT NULL,
-	duration TIME NOT NULL,
-    teacherID INTEGER NOT NULL,
-    ASubject VARCHAR(250) NOT NULL,
-    CONSTRAINT pk_class PRIMARY KEY (groupID, timeStart)
+	duration TIME NOT NULL DEFAULT 45,
+    teacher INTEGER NOT NULL,
+    subject VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_class PRIMARY KEY (groupID, timeStart),
+	CONSTRAINT class_ibfk_1 FOREIGN KEY ('group') REFERENCES 'group'(groupID) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT class_ibfk_2 FOREIGN KEY (teacher) REFERENCES teacher(teacherID) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT class_ibfk_3 FOREIGN KEY (subject) REFERENCES subject(name) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Staff (
+--
+--Table structure for table 'staff'
+--
+
+CREATE TABLE staff (
 	staffID INTEGER NOT NULL,
     firstName VARCHAR(50) NOT NULL,
-    middleName VARCHAR(50),
+    middleName VARCHAR(50) NOT NULL DEFAULT '',
     lastName VARCHAR(200) NOT NULL,
-    admin BOOL NOT NULL,
-    CONSTRAINT pk_staff PRIMARY KEY (staffID)
+	username VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_staff PRIMARY KEY (staffID),
+	CONSTRAINT staff_ibfk_1 FOREIGN KEY (username) REFERENCES account(username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE AGroup ( 
+--
+-- Table structure for table 'group'
+--
+
+CREATE TABLE 'group' (
 	groupID INTEGER NOT NULL,
     course VARCHAR(200) NOT NULL,
-    AYear YEAR NOT NULL, 
-    tutorID INTEGER NOT NULL,
-    CONSTRAINT pk_group PRIMARY KEY(groupID)
+    year YEAR NOT NULL,
+    tutor INTEGER NOT NULL,
+    CONSTRAINT pk_group PRIMARY KEY(groupID),
+	CONSTRAINT group_ibfk_1 FOREIGN KEY (tutor) REFERENCES academicTutor(tutorID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Student (
+--
+-- Table structure for table 'student'
+--
+
+CREATE TABLE student (
 	studentID INTEGER NOT NULL,
     firstName VARCHAR(50) NOT NULL,
-    middleName VARCHAR(50),
+    middleName VARCHAR(50) NOT NULL DEFAULT '',
     lastName VARCHAR(200) NOT NULL,
-    groupID INTEGER NOT NULL,
-    tutorID INTEGER NOT NULL,
-    CONSTRAINT pk_student PRIMARY KEY(studentID)
+    'group' INTEGER NOT NULL,
+    tutor INTEGER,
+	usename VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_student PRIMARY KEY(studentID),
+	CONSTRAINT student_ibfk_1 FOREIGN KEY ('group') REFERENCES 'group'(groupID) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT student_ibfk_2 FOREIGN KEY (tutor) REFERENCES sportsTutor(tutorID) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT student_ibfk_3 FOREIGN KEY (username) REFERENCES account(username) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE Teacher (
+--
+-- Table structure for table 'teacher'
+--
+
+CREATE TABLE teacher (
 	teacherID INTEGER NOT NULL,
-	CONSTRAINT pk_teacher PRIMARY KEY(teacherID)
+	CONSTRAINT pk_teacher PRIMARY KEY(teacherID),
+	CONSTRAINT teacher_ibfk_1 FOREIGN KEY (teacherID) REFERENCES staff(staffID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE SportsTutor (
+--
+-- Table structure for table 'sportsTutor'
+--
+
+CREATE TABLE sportsTutor (
 	tutorID INTEGER NOT NULL,
-	CONSTRAINT pk_sportstutor PRIMARY KEY(tutorID)
+	CONSTRAINT pk_sportsTutor PRIMARY KEY(tutorID),
+	CONSTRAINT sportsTutor_ibfk_1 FOREIGN KEY (tutorID) REFERENCES staff(staffID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TABLE AcademicTutor (
+--
+-- Table structure for table 'academicTutor'
+--
+
+CREATE TABLE academicTutor (
 	tutorID INTEGER NOT NULL,
-	CONSTRAINT pk_academictutor PRIMARY KEY(tutorID)
+	CONSTRAINT pk_academictutor PRIMARY KEY(tutorID),
+	CONSTRAINT academicTutor_ibfk_1 FOREIGN KEY (tutorID) REFERENCES staff(staffID) ON UPDATE CASCADE ON DELETE CASCADE
 );
-
-ALTER TABLE AClass 
-ADD CONSTRAINT fk_AGroup_AClass
-	FOREIGN KEY (groupID) REFERENCES AGroup (groupID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-    
-ALTER TABLE AClass 
-ADD CONSTRAINT fk_Teacher_AClass
-	FOREIGN KEY (teacherID) REFERENCES Teacher (teacherID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-
-ALTER TABLE AClass 
-ADD CONSTRAINT fk_ASubject_AClass
-	FOREIGN KEY (ASubject) REFERENCES Asubject (Aname)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-
-ALTER TABLE AGroup
-ADD CONSTRAINT fk_AcademicTutor_AGroup
-	FOREIGN KEY (tutorID) REFERENCES AcademicTutor (tutorID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-    
-ALTER TABLE Student
-ADD CONSTRAINT fk_AGroup_Student
-	FOREIGN KEY (groupID) REFERENCES AGroup (groupID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-
-ALTER TABLE Student
-ADD CONSTRAINT fk_SportsTutor_Student
-	FOREIGN KEY (tutorID) REFERENCES SportsTutor (tutorID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-    
-ALTER TABLE Teacher
-ADD CONSTRAINT fk_Staff_Teacher
-	FOREIGN KEY (teacherID) REFERENCES Staff (staffID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-    
-ALTER TABLE SportsTutor
-ADD CONSTRAINT fk_Staff_SportsTutor
-	FOREIGN KEY (tutorID) REFERENCES Staff (staffID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
-    
-ALTER TABLE AcademicTutor
-ADD CONSTRAINT fk_Staff_AcademicTutor
-	FOREIGN KEY (tutorID) REFERENCES Staff (staffID)
-    ON UPDATE CASCADE
-	ON DELETE CASCADE;
