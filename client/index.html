@@ -4,21 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Helen Parkhurst School</title>
+    <link href="./assets/css/index.css" rel="stylesheet" type="text/css">
     <link href="./assets/css/app.css" rel="stylesheet" type="text/css">
     <script src="./assets/js/foundation.js"></script>
     <script src="./assets/js/templates.js"></script>
     <script src="./assets/js/routes.js"></script>
-    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/app.js"></script>  
+    <script src="./assets/js/index.js"></script>  
+    <script src="./assets/js/calendar.js"></script>  
   </head>
   <body>
     <div class="grid-frame vertical">
-      <div class="grid-content shrink" style="padding: 0;">
+      <div class="grid-content shrink">
         <ul class="primary condense menu-bar">
           <li ui-sref-active="is-active"><a ui-sref="home" class="home"><strong>Home</strong></a>
           </li>
           <li ui-sref-active="is-active"><a ui-sref="login">Login Page</a></li>
           <li ui-sref-active="is-active"><a ui-sref="about">About</a></li>
-          <li ui-sref-active="is-active"><a ui-sref="contact">Contact</a></li>
+          <li ui-sref-active="is-active"><a ui-sref="createUser">Create User</a></li>
         </ul>
       </div>
       <div ui-view class="grid-content">

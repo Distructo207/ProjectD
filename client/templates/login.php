@@ -14,7 +14,7 @@ url: /login
     	<input type="text" name="username" placeholder="Username" required="required" />
         <input type="password" name="password" placeholder="Password" required="required" />
         <input type="radio" name="type" value="student">Student</input><input type="radio" name="type" value="staff">staff</input>
-        <button type="submit" class="btn btn-primary btn-block btn-large" >LOGIN</button>
+        <button type="submit" class="btn btn-primary btn-block btn-large">LOGIN</button>
     </form>
     </div>
 </div>

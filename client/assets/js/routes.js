@@ -1,0 +1,1 @@
+var foundationRoutes = [{"name":"students page","url":"/student","path":"templates/students.html"},{"name":"login","url":"/login","path":"templates/login.html"},{"name":"createUser","url":"/createUser","path":"templates/createUser.html"},{"name":"alert","url":"/alert","path":"templates/alert.html"},{"name":"home","url":"/","path":"templates/home.html"}]; 
